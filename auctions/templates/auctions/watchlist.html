@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <h2>Watchlist</h2>
+    {% for auction in watchlist %}
+    <div class="auction-listing">
+                
+        <img src="{{ auction.image }}" alt="{{ auction.title }}">
+        <div>
+            <p class="title">{{ auction.title }}</p>
+        <p class="description">{{ auction.description }}</p>
+        <p>Starting Bid: ${{ auction.starting_bid }}</p>
+        <p>Highest Bid: ${{ highest_bid }}</p>
+        <p>Status: {{ auction.is_active|yesno:"Active,Inactive" }}</p>
+        <a href="{% url 'auction' auction.id %}">View Auction</a>
+        </div>
+      
+    </div>
+    {% endfor %}
+    </div>
+    
+{% endblock %}

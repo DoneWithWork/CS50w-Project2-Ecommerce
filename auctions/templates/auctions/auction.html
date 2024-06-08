@@ -1,0 +1,71 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="auction-listing">
+                
+        <img src="{{ auction.image }}" alt="{{ auction.title }}">
+        <div>
+            <p class="title">{{ auction.title }}</p>
+        <p class="description">{{ auction.description }}</p>
+        <p>Starting Bid: ${{ auction.starting_bid }}</p>
+        <p>Highest Bid: ${{ highest_bid }}</p>
+        <p>Status: {{ auction.is_active|yesno:"Active,Inactive" }}</p>
+       <form action="{% url 'watchlist' auction.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value='{{ watched|yesno:"Remove from Watchlist,Add to Watchlist"}}'>
+       </form>
+        </div>
+       
+      
+    </div>
+    <div class="row">
+        <div>
+            <div>
+                <p>{{num_bids}}(s) number of bids have been placed</p>
+            </div>
+            <div class="">
+               {% if creator == True and auction.is_active == True %}
+                <form action="{% url 'closeauction' auction.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" class="btn" value="Close Auction?">
+                </form>
+                {% endif %}
+            </div>
+            <div class="">
+                {% if is_winner == True %}
+                <p>You Won The Auction. Enjoy your prize</p>
+                {% else %}
+                
+            <div class="bid">
+                <form action="{% url 'newbid' auction.id %}" method="post">
+                    {% csrf_token %}
+                    {{bidForm}}
+                    {{error}}
+                    <input type="submit" class="btn" value="Place Bid">
+                </form>
+            </div>
+                 {% endif %}
+             </div>
+             <p class="title">Comments</p>
+             {% for comment in comments %}
+             <div class="comment">
+                 <p>{{comment.user}}:</p>
+                 <p>{{comment.content}}</p>
+             </div>
+             {% endfor %}
+        </div>
+        <div class="comments">
+           
+            
+            <form action="{% url 'newcomment' auction.id %}" method="post">
+                {% csrf_token %}
+                {{commentForm}}
+                <input class="btn" type="submit" value="Add Comment">
+            </form>
+           
+        </div>
+    </div>
+   
+</div>
+{% endblock %}

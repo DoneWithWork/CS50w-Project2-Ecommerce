@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+
+   <div class="container">
+    <h2>Categories</h2>
+
+   
+    {% for item in auctions_with_bids %}
+        <div class="auction-listing">
+            
+            <img src="{{ item.auction.image }}" alt="{{ item.auction.title }}">
+            <div>
+                <p class="title">{{ item.auction.title }}</p>
+            <p class="description">{{ item.auction.description }}</p>
+            <p>Starting Bid: ${{ item.auction.starting_bid }}</p>
+            <p>Highest Bid: ${{ item.highest_bid }}</p>
+            <p>Status: {{ item.auction.is_active|yesno:"Active,Inactive" }}</p>
+            <a href="{% url 'auction' item.auction.id %}">View</a>
+            </div>
+        </div>
+    {% endfor %}
+   </div>
+  
+
+{% endblock %}
+
+
